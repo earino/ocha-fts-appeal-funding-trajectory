@@ -1,0 +1,155 @@
+{
+  "artifact_version": "7bbc851418920071eea5e3abc17fad9812e107295e0354afbeefa953077832e1",
+  "assets": {
+    "meta.json": {
+      "bytes": 1891,
+      "download": "https://github.com/earino/ocha-fts-appeal-funding-trajectory/releases/download/v2026.11/meta.json",
+      "hf_path": "meta.json",
+      "sha256": "9f3095a8f2662387c75e098f4d1a4e60292109f5ebc503288a357df864659b5e"
+    },
+    "private-holdout.csv": {
+      "bytes": 12862,
+      "download": "https://github.com/earino/ocha-fts-appeal-funding-trajectory/releases/download/v2026.11/private-holdout.csv",
+      "hf_path": "data/private-holdout.csv",
+      "sha256": "ffa427d9e67cd1ed7213c370b805287e58549d9058e9241bb01af40105dd37d9"
+    },
+    "public-eval.csv": {
+      "bytes": 9322,
+      "download": "https://github.com/earino/ocha-fts-appeal-funding-trajectory/releases/download/v2026.11/public-eval.csv",
+      "hf_path": "data/public-eval.csv",
+      "sha256": "c11c03935277ecb164ccde4648fd6541e69d962239a561347832e220c981ef2c"
+    },
+    "public-train.csv": {
+      "bytes": 29660,
+      "download": "https://github.com/earino/ocha-fts-appeal-funding-trajectory/releases/download/v2026.11/public-train.csv",
+      "hf_path": "data/public-train.csv",
+      "sha256": "db0c7eea0efd3362f369b64c446d4f237b390d8d5539306dc9b66857e685b787"
+    },
+    "quality.json": {
+      "bytes": 23627,
+      "download": "https://github.com/earino/ocha-fts-appeal-funding-trajectory/releases/download/v2026.11/quality.json",
+      "hf_path": "quality.json",
+      "sha256": "108be84f79ecfc54477404a0af20f5e9a0e33f58ab70c8cea7f7dc763d7e0432"
+    }
+  },
+  "baseline": {
+    "metrics": {
+      "Evaluation ROC AUC": 0.6452
+    },
+    "scope": "runner-contract baseline only; no agent loop, no holdout evaluation. Holdout stays sealed until the design is frozen."
+  },
+  "configs": [],
+  "dataset": "ocha-fts-appeal-funding-trajectory",
+  "domain": "Humanitarian financing",
+  "github_repository": "earino/ocha-fts-appeal-funding-trajectory",
+  "hf_repository": "earino/ocha-fts-appeal-funding-trajectory",
+  "licenses": {
+    "attribution": "Derived dataset based on Financial Tracking Service (FTS) data, OCHA HPC API records harvested 2026-10-30 and the HDX 'Global - Requirements and Funding Data' bulk CSV (downloaded 2026-10-29), https://fts.unocha.org and https://data.humdata.org/dataset/global-requirements-and-funding-data . Contains OCHA Financial Tracking Service data licensed under CC BY-IGO. Not an OCHA or FTS product.",
+    "citation": "United Nations OCHA. Financial Tracking Service: Global Requirements and Funding Data (HDX bulk distribution, downloaded 2026-10-29) and HPC API plan/flow records (harvested 2026-10-30). https://fts.unocha.org . CC BY-IGO. Derived dataset: humanitarian-appeal funding-trajectory prediction task (not an OCHA product).",
+    "code": "MIT",
+    "compilation_scope": "Our contribution - the single-country-appeal eligibility frame (one-country CSV groups with a positive launch-vintage original requirements figure, plan years 2000-2025), the counted exclusions (multi-country regional groups, no-orig groups, the pre-window and the 2026+ live edge as unobserved-target censoring), the derived binary label (year-end funding >= 50% of original launch-vintage requirements), the appeal-recency feature computed only from the YEARS of strictly-earlier same-country appeals, the launch-instant temporal partition, and the packaging - is dedicated to the public domain under CC0-1.0. The dedication covers only our contribution: the underlying FTS/HPC data keeps its own terms and attribution requirements, which carry through to every copy of the derived data. Nothing here relicenses the source or presents CC0 as the source's terms.",
+    "data_compilation": "CC0-1.0",
+    "source_data": "CC-BY-IGO"
+  },
+  "limitations": [
+    "Derived research dataset, not an OCHA or FTS product; OCHA has not reviewed, authorised or endorsed it.",
+    "Retrospective research only: launch-time availability, strictly-after-launch label timing, and original-requirements vintages are NOT VERIFIED (no historical publication ledger exists for the FTS record).",
+    "The grain is one appeal-plan ID x plan year; (country, plan year) is not unique - 41 country-year groups carry more than one appeal.",
+    "The illustrative stock runner (eval AUC 0.6452) trails the persistence reference (0.7171); no headroom is claimed, and the persistence reference holds an information advantage the model is denied by design.",
+    "The isolated-rows declaration is a conservative posture, not an enforcement claim: nothing shipped enforces it, and any real evaluation must restrict solver access itself.",
+    "37 of 758 rows differ between the flow endpoint's year total and the HDX CSV's funding column; the count is disclosed, not hidden.",
+    "The labeled holdout is downloadable by design; keep it outside every evaluated agent's workspace.",
+    "Source terms preserved: FTS use-and-republish permission plus CC BY-IGO on the HDX bulk input; our compilation contribution is CC0-1.0 and code MIT."
+  ],
+  "post": {
+    "paragraphs": [
+      "OCHA's Financial Tracking Service records every coordinated appeal, its original launch requirements, and the funding that follows. The contribution here is not access: it is the pinned FTS/HPC harvest, the declaration that the prediction instant is the appeal's launch, and the label - whether appeal-linked funding reaches at least half of the original requirements by the close of the plan year. One row per appeal-plan ID x plan year (758 rows; a country can carry several distinct appeals in one plan year, and the package says so explicitly). Funding totals themselves never ship.",
+      "This release survived two adversarial audits. The first rejected its predecessor: the shipped country-history features let a label-blind attacker reconstruct earlier rows' labels exactly. Those columns are gone - the only history-derived column reads prior appeal YEARS, never labels - and the re-audit's frozen attacks, re-run on these bytes, found no replacement channel in 1,223 probes. The re-audit returned PUBLISH WITH CONDITIONS: describe the grain honestly (done), stay retrospective-only (stated), and keep the model's underperformance visible (kept).",
+      "Every number is published beside its references, because the references decide what it means. The illustrative stock runner reaches eval AUC 0.6452 and TRAILS persistence at 0.7171 - an honest negative finding. And the comparison is asymmetric by design: the model is deliberately denied the last prior outcome (the removed leaky feature) while the persistence reference reads it scorer-side. An auditor's untuned logistic fit reached 0.788 on the same rows, so signal beyond the references plausibly exists - but no headroom is claimed under the shipped protocol.",
+      "This is retrospective research over a current-vintage record. The FTS API exposes no historical vintages, no row-level launch timestamps or funding-crossing times ship, and no point-in-time or operational forecasting claim is made. The labeled holdout ships by design and stays outside every evaluated agent's workspace."
+    ],
+    "title": "Will the appeal reach half its ask? A launch-time task over FTS records"
+  },
+  "qualification": {
+    "gate_version": "1.5.0",
+    "result": "PASSED"
+  },
+  "record_sha256": "967b43564a2a7d71f315324b9336f818ccb18600b3d708697e89381ca142a044",
+  "release_date": "2026-11-03",
+  "release_tag": "v2026.11",
+  "schema_version": 1,
+  "site_revision": 1,
+  "source": {
+    "name": "OCHA Financial Tracking Service - HPC API plan/flow records and the HDX 'Global - Requirements and Funding Data' bulk CSV",
+    "url": "https://fts.unocha.org/ and https://data.humdata.org/dataset/global-requirements-and-funding-data"
+  },
+  "splits": {
+    "eval": {
+      "positives": 81,
+      "rows": 139
+    },
+    "holdout": {
+      "positives": 96,
+      "rows": 182
+    },
+    "train": {
+      "positives": 279,
+      "rows": 437
+    }
+  },
+  "suitability": {
+    "artifact_version": "7bbc851418920071eea5e3abc17fad9812e107295e0354afbeefa953077832e1",
+    "corrections": [
+      "2026-11-01 independent queue audit (Codex, read-only): DO NOT PUBLISH the 12-column artifact e7441e1f - prior-outcome features recovered 120/139 eval and 128/182 holdout labels exactly. Remediation performed as the one rebuild for this defect class: fts-appeal-003 removed country_prior_appeals, country_prior_covered_rate and country_last_prior_covered, rows unchanged, every reference reproduced to the last digit, gate 1.5.0 clean, exact-byte accept on the worker. The superseded v2026.10-era staged artifacts (staging releases 430422823, 430443206) remain preserved as historical evidence and were never public",
+      "2026-11-03 re-audit condition 1 applied (PUBLISH WITH CONDITIONS): the grain is described as one FTS appeal-plan ID x plan year everywhere (quality.json id_columns_note, README, card, builder copy), with the measured country-year non-uniqueness recorded (41 repeated groups; e.g. Tanzania 2001-43 and 2001-73). Descriptor-only change: the three CSVs and meta.json are byte-identical to the audited v2026.11 bytes; re-qualified as 7bbc8514."
+    ],
+    "cross_row_audit": {
+      "scope": "fts-appeal-003 construction asserts (in-build, exit 0 proves them) that no shipped column reads any row's outcome, with years_since_country_prior brute-force-recomputed label-free; the gate 1.5.0 cross-row audit block records the removed prior-outcome join with its rationale (probes empty). The P0 channel itself was demonstrated only on the PRE-rebuild artifact by the 2026-11-01 queue audit; the required fresh label-blind re-attack of these exact bytes is still pending (see required_actions)",
+      "status": "bounded_no_recovery"
+    },
+    "dataset": "ocha-fts-appeal-funding-trajectory",
+    "decision": "retain_restricted",
+    "evaluation_access": "isolated_rows",
+    "historical_availability": "unverified",
+    "limitations": [
+      "The FTS/HPC API retains no historical vintages (checked at construction), so a reverse-history probe is not performable: retrospective research over the pinned 2026-10-29/30 harvest, never a certified historical forecasting setup",
+      "Training-label timing is unverified: labels resolve from current-vintage funding totals, not from evidence of what was published at each past instant",
+      "Small panel: 139 eval rows (81 positives) across 51 countries and four appeal years; the recorded finding's scope is these rows under this runner configuration",
+      "Flow totals differ from the HDX CSV funding column on 37/758 rows (the disclosed count); flow and CSV agreed to the dollar on the retained fixtures and the cross-check runs on every row at construction within a 10% guard",
+      "The persistence and prior-mean references are recomputed scorer-side from prior-in-time labels because their feature form is exactly the prior-outcome channel removed under the operator's P0 standard; the information asymmetry against the model is inherent to the leakage standard, not a defect of either measurement",
+      "A fresh independent adversarial audit of THESE rebuilt bytes has not yet run: the 2026-11-01 queue audit's frozen attack code recovered labels on the pre-rebuild artifact and must be re-run label-blind to complete the record before any flip"
+    ],
+    "release_tag": "v2026.11",
+    "reviewed_on": "2026-11-03",
+    "schema_version": 1,
+    "selection": "prediction_time",
+    "summary": "Retained for retrospective model-development research and agent evaluation with the labeled eval split as development/validation data. Each row is one single-country UN-coordinated appeal-year with a positive launch-vintage original requirements figure; every feature is the appeal's own launch-record attribute, except years_since_country_prior, which reads only WHICH strictly-earlier same-country appeals exist (their years, never any outcome), is derivable from the shipped row set itself, and is asserted label-free by brute-force recompute at construction. The prediction instant is the appeal's public launch (event_time, requirements announcement), months before the plan year closes; the label (year-end funding >= 50% of original requirements) is resolved from the FTS flow endpoint's per-plan-year fundingTotal, which never ships. The 2026.10-era prior-outcome features that allowed exact cross-row label recovery (the 2026-11-01 queue audit recovered 120/139 eval and 128/182 holdout labels through count x rounded-rate arithmetic plus the last-prior tie rule) no longer ship in this version; rows are unchanged vs the audited e7441e1f and every reference reproduced to the last digit after the rebuild. The FTS/HPC API exposes no historical vintages (checked), so training-label timing and full-row historical availability are unverified and none is claimed: this is current-vintage retrospective research under a restricted isolated-rows protocol, never a certified historical-forecasting setup. Measured finding carried beside every figure: on the identical 139 eval rows the stock runner scores 0.6452 while the persistence reference (persistence_last_coverage, recomputed scorer-side from prior-in-time labels because its feature form is exactly the removed P0 channel) scores 0.7171136653895275 - the model trails persistence by 0.0719 and every other measured simple reference except the majority-class rate: no demonstrated headroom under this protocol for the stock runner. The comparison carries an inherent information asymmetry that must travel with the number: the model is deliberately denied the last prior same-country outcome under the operator's P0 standard while the persistence reference reads it scorer-side (train+eval labels only; the holdout is never opened). Any headroom claim requires beating persistence_last_coverage on the same rows.",
+    "supported_uses": [
+      "Retrospective research and method comparison on the pinned 2026-10-29/30 harvest, predicting row-wise from the shipped launch-instant columns under an isolated-rows protocol",
+      "Agent evaluation with the labeled eval split as development/validation data and the holdout kept outside agent development until a design is frozen",
+      "Study of appeal-level, plan-type and country-level prevalence and of which launch attributes carry outcome signal",
+      "Persistence-vs-model comparison research, quoting both figures on the identical rows with the information-asymmetry note"
+    ],
+    "training_label_timing": "unverified",
+    "unsupported_uses": [
+      "Operational or live launch-instant funding screening: no historical operational-availability evidence exists and none is claimed",
+      "Point-in-time historical reconstruction: the FTS/HPC API serves a current vintage only; a later re-fetch is a different vintage, not what was knowable at an earlier instant",
+      "Quoting the model AUC (0.6452) without the reference comparison (persistence 0.71711) and the information-asymmetry note beside it",
+      "Reading the model-vs-persistence gap as model failure against an equal information set: the persistence reference reads a value the model is deliberately denied",
+      "Any historical-forecasting certification: a full-row availability ledger and reviewed as-of evidence do not exist for this source"
+    ],
+    "vintage": "current_snapshot"
+  },
+  "summary": "Research task: at a humanitarian appeal's launch, from launch-time facts only - plan type, GHO membership, original requirements, and the gap since the country's prior appeal - predict whether appeal-linked funding will reach at least half of the original launch requirements.",
+  "task_type": "binary-classification",
+  "title": "OCHA appeal funding trajectory",
+  "urls": {
+    "catalog": "https://earino.github.io/dataset-factory-site/",
+    "github": "https://github.com/earino/ocha-fts-appeal-funding-trajectory",
+    "github_release": "https://github.com/earino/ocha-fts-appeal-funding-trajectory/releases/tag/v2026.11",
+    "huggingface": "https://huggingface.co/datasets/earino/ocha-fts-appeal-funding-trajectory",
+    "huggingface_version": "https://huggingface.co/datasets/earino/ocha-fts-appeal-funding-trajectory/tree/v2026.11",
+    "version": "https://earino.github.io/ocha-fts-appeal-funding-trajectory/versions/v2026.11/",
+    "website": "https://earino.github.io/ocha-fts-appeal-funding-trajectory/"
+  }
+}

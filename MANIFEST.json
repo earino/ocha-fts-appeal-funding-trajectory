@@ -1,85 +1,6 @@
 {
-  "dataset": "ocha-fts-appeal-funding-trajectory",
-  "release_version": "2026.11",
-  "release_tag": "v2026.11",
-  "repository": "https://github.com/earino/ocha-fts-appeal-funding-trajectory",
-  "visibility": "private (publication requires explicit authorisation)",
-  "artifact_version": "7bbc851418920071eea5e3abc17fad9812e107295e0354afbeefa953077832e1",
-  "package_digest": null,
   "artifact_job": "fts-appeal-003",
-  "staging_release": 431492902,
-  "staging_release_tag": "job-fts-appeal-003",
-  "staging_repo": "earino/dataset-factory-staging",
-  "construction_commit": "ac11b88fad36fb42507f3deae00f292602d2da4f",
-  "gate_version": "1.5.0",
-  "gate_command": "python3 code/qualify_dataset.py ./task",
-  "measurements": {
-    "artifact_version": "ac529cd4e9d4da90f804ecef425e74c94a946b857fe39095fd73a0407506b8c0",
-    "gate_version": "1.5.0",
-    "qualified_by_job": "fts-appeal-003 (gate on the full artifact on the worker, failed_checks empty; exact-byte --accept ACCEPTED)",
-    "baseline_job": "fts-baseline-002 (2026-11-02): fetched the five accepted files from private staging release 431492902 with every sha256 verified on arrival, re-accepted the bytes against the gate's own collected report BEFORE any score existed, materialized the runner workdir from the public splits only (the private holdout was never copied into a workdir), then ran the benchmark's own train.py and validate.sh unmodified (bundled digests equal the read-only clone's)",
-    "panel": {
-      "rows": {
-        "train": 437,
-        "eval": 139,
-        "holdout": 182
-      },
-      "positives": {
-        "train": 279,
-        "eval": 81,
-        "holdout": 96
-      },
-      "positive_rate": {
-        "train": 0.638444,
-        "eval": 0.582734,
-        "holdout": 0.527473
-      },
-      "distinct_countries": {
-        "train": 78,
-        "eval": 51,
-        "holdout": 43
-      },
-      "split": "temporal on the plan year: train 2000-2016, eval 2017-2020, holdout 2021-2025 (the 2026+ live edge is excluded until those years close; exclusions are counted, never scored)",
-      "shipped_columns": 9
-    },
-    "references_same_eval_rows": {
-      "persistence_last_coverage": 0.7171136653895275,
-      "prior_mean_rate": 0.7143465304384845,
-      "ask_size_rate": 0.7126436781609196,
-      "country_hist_rate": 0.6729459344401874,
-      "plan_type_rate": 0.669220945083014,
-      "majority_class_accuracy": 0.5827338129496403,
-      "note": "all references measured on the identical 139 eval rows by the references implementation in code/score.py (job fts-appeal-003 stage 4, post-acceptance only). persistence_last_coverage and prior_mean_rate are recomputed scorer-side from prior-in-time same-country labels (train+eval only; the holdout is never opened) because their feature form is exactly the prior-outcome channel removed under the operator's P0 standard. majority_class_accuracy fits the constant label on train and measures its agreement with eval labels."
-    },
-    "baseline_result": {
-      "full_model_eval_auc_train_py": 0.6452,
-      "full_model_eval_auc_validate_py": 0.6452,
-      "two_implementations_agree": true,
-      "contract_ok": true,
-      "runner_unmodified": true,
-      "dependencies": {
-        "python": "3.13.18",
-        "pandas": "2.3.3",
-        "numpy": "2.5.4",
-        "xgboost": "3.4.1",
-        "scikit-learn": "1.9.1"
-      },
-      "scope": "runner-contract baseline only; no agent or harness comparison was run and none is implied; the holdout was not evaluated and stays sealed"
-    },
-    "finding": {
-      "verdict": "no demonstrated headroom under this protocol for the stock runner",
-      "comparison": "full model 0.6452 vs persistence_last_coverage 0.7171136653895275 on the identical 139 eval rows: the model trails by 0.0719 AUC, and also trails every other measured simple reference except the majority-class rate",
-      "information_asymmetry": "the model's shipped information set deliberately omits the last prior same-country outcome (the country_prior_* features were the 2026-11-01 queue audit's P0 label-recovery channel and are unshippable under the operator's standard), while the persistence reference reads prior-in-time outcomes scorer-side; the gap is quoted with this note and is not read as model failure against an equal information set",
-      "recorded_defect_not_task_property": "a model below persistence is a recorded defect under the dataset-qualification protocol: any headroom claim on this task requires beating persistence_last_coverage on the same rows",
-      "predecessor": "the same stock runner measured 0.6298 on the pre-rebuild 12-column artifact e7441e1f (job fts-baseline-001, 2026-11-01); removing the P0 prior-outcome features slightly improved the runner (0.6298 -> 0.6452) while closing the label-recovery channel"
-    },
-    "per_label_year_note": "references and the baseline are quoted on the pooled 2017-2020 eval window; the references implementation also reports per-year persistence AUC (0.73611 / 0.66579 / 0.74716 / 0.72727 for 2017-2020), recorded in the candidate record",
-    "p0_history": {
-      "2026-11-01_queue_audit": "the audit recovered 120/139 eval and 128/182 holdout labels exactly through the shipped country_prior_* features (count x rounded-rate arithmetic plus the last-prior tie rule), reading only shipped features of later rows",
-      "fts-appeal-003_rebuild": "the prior-outcome features (country_prior_appeals, country_prior_covered_rate, country_last_prior_covered) no longer ship; every remaining feature is a function of the row's own launch record except years_since_country_prior, which reads only WHICH strictly-earlier same-country appeals exist (their years, never their labels), is derivable from the shipped row set itself, and is asserted label-free by brute-force recompute at construction; rows are unchanged vs the audited artifact e7441e1f (train 437/279, eval 139/81, holdout 182/96)",
-      "post_rebuild_requirement": "the fresh independent pre-flip audit must re-attack the rebuilt bytes label-blind; the 2026-11-01 queue audit's frozen attack code is the baseline and must now find no operand columns"
-    }
-  },
+  "artifact_version": "7bbc851418920071eea5e3abc17fad9812e107295e0354afbeefa953077832e1",
   "assets": {
     "meta.json": {
       "asset_name": "meta.json",
@@ -107,16 +28,222 @@
       "sha256": "108be84f79ecfc54477404a0af20f5e9a0e33f58ab70c8cea7f7dc763d7e0432"
     }
   },
+  "baseline": {
+    "artifact": {
+      "id_columns": [
+        "plan_year_id"
+      ],
+      "name": "ocha-fts-appeal-funding-trajectory",
+      "positive_label": 1,
+      "positive_rate": {
+        "eval": 0.582734,
+        "holdout": 0.527473,
+        "train": 0.638444
+      },
+      "rows": {
+        "eval": 139,
+        "holdout": 182,
+        "train": 437
+      },
+      "split_description": "temporal on the plan year: train 2000-2016, eval 2017-2020, holdout 2021-2025 (the 2026+ live edge is excluded until those years close; exclusions are counted, never scored)",
+      "target": "reached_half"
+    },
+    "contract": {
+      "contract_ok": true,
+      "eval_auc_from_train_py": 0.6452,
+      "eval_auc_from_validate_py": 0.6452
+    },
+    "dependencies": {
+      "numpy": "2.5.4",
+      "pandas": "2.3.3",
+      "python": "3.13.18",
+      "scikit-learn": "1.9.1",
+      "xgboost": "3.4.1"
+    },
+    "job": "fts-baseline-005",
+    "purpose": "one baseline through the runner's existing training and validation contract, on the accepted ocha-fts-appeal-funding-trajectory artifact 7bbc8514 (the re-audit-corrected v2026.11 package; grain described as appeal-plan ID x plan year). Re-run of the fts-baseline-002 measurement on the corrected shipped bytes: the three CSVs are byte-identical, and every figure reproduces exactly (Eval AUC 0.6452 via train.py, validate.py and the predict_proba path; CONTRACT OK; gate --accept ACCEPTED 7bbc8514 before any number was computed).",
+    "qualification_report": {
+      "accepted_artifact_version": "7bbc851418920071",
+      "accepted_before_scoring": true,
+      "bundled": "qualification.json",
+      "gate_failed_checks": [],
+      "gate_ok": true,
+      "gate_version": "1.5.0",
+      "qualified_artifact_version": "7bbc851418920071eea5e3abc17fad9812e107295e0354afbeefa953077832e1",
+      "sha256": "cbbef718b801b74297f7fec8296111f7647d6206f6b11d38e5277cf4b9af5d64"
+    },
+    "runner_files": {
+      "bundled_sha256": {
+        "train.py": "a3c6bcf13735bc85c52129ded68f839090dffdc266ebc3810dc61b2e6ea5e7e8",
+        "validate.py": "b597e7f84fed614e64b4a86fbecbd6ec0145916a24d0d221a796586976418e7b",
+        "validate.sh": "3f06ca48f11c2e05d331b4d8394284925de660c1d4b086d2f8243959e83b7e6d"
+      },
+      "expected_sha256": {},
+      "unmodified": false
+    },
+    "scope": "runner-contract baseline only; no agent loop, no holdout evaluation. Holdout stays sealed until the design is frozen."
+  },
+  "baseline_command": "sh baseline/reproduce_baseline.sh ./task",
+  "construction_commit": "ac11b88fad36fb42507f3deae00f292602d2da4f",
+  "dataset": "ocha-fts-appeal-funding-trajectory",
+  "files": {
+    "meta.json": {
+      "bytes": 1891,
+      "sha256": "9f3095a8f2662387c75e098f4d1a4e60292109f5ebc503288a357df864659b5e"
+    },
+    "private/holdout.csv": {
+      "bytes": 12862,
+      "sha256": "ffa427d9e67cd1ed7213c370b805287e58549d9058e9241bb01af40105dd37d9"
+    },
+    "public/eval.csv": {
+      "bytes": 9322,
+      "sha256": "c11c03935277ecb164ccde4648fd6541e69d962239a561347832e220c981ef2c"
+    },
+    "public/train.csv": {
+      "bytes": 29660,
+      "sha256": "db0c7eea0efd3362f369b64c446d4f237b390d8d5539306dc9b66857e685b787"
+    },
+    "quality.json": {
+      "bytes": 23627,
+      "sha256": "108be84f79ecfc54477404a0af20f5e9a0e33f58ab70c8cea7f7dc763d7e0432"
+    }
+  },
+  "gate_command": "python3 code/qualify_dataset.py ./task",
+  "gate_version": "1.5.0",
+  "get_dataset_command": "python3 get_dataset.py --dest ./task",
+  "layout": {
+    "meta.json": "meta.json",
+    "private/holdout.csv": "private/holdout.csv",
+    "public/eval.csv": "public/eval.csv",
+    "public/train.csv": "public/train.csv",
+    "quality.json": "quality.json"
+  },
+  "licenses": {
+    "code": {
+      "copyright": "Copyright (c) 2026 E. Ariño de la Rubia (earino)",
+      "file": "LICENSE-MIT.txt",
+      "spdx": "MIT",
+      "third_party": [
+        {
+          "file": "baseline/train.py, baseline/validate.py, baseline/validate.sh",
+          "permission": "The benchmark checkout is read-only; permission to distribute verbatim copies of its runner files covers the distributed copies only",
+          "terms": "MIT - the harness benchmark's own runner files, shipped verbatim and unmodified (bundled sha256 equal the benchmark clone's hashes, recorded as unmodified: true in the baseline job result fts-baseline-002)"
+        }
+      ]
+    },
+    "data_compilation": {
+      "file": "LICENSE-CC0-1.0.txt",
+      "scope": "Our contribution - the single-country-appeal eligibility frame (one-country CSV groups with a positive launch-vintage original requirements figure, plan years 2000-2025), the counted exclusions (multi-country regional groups, no-orig groups, the pre-window and the 2026+ live edge as unobserved-target censoring), the derived binary label (year-end funding >= 50% of original launch-vintage requirements), the appeal-recency feature computed only from the YEARS of strictly-earlier same-country appeals, the launch-instant temporal partition, and the packaging - is dedicated to the public domain under CC0-1.0. The dedication covers only our contribution: the underlying FTS/HPC data keeps its own terms and attribution requirements, which carry through to every copy of the derived data. Nothing here relicenses the source or presents CC0 as the source's terms.",
+      "spdx": "CC0-1.0"
+    },
+    "decided": "2026-11-02",
+    "policy_version": "2026-09-19",
+    "rules": [
+      "Code and documentation: MIT by default.",
+      "Our rights in a derived compilation: CC0-1.0 by default.",
+      "The source's own terms are preserved and never relicensed; the compilation dedication covers only our contribution.",
+      "Each dataset must use terms compatible with its sources. CC0 is NOT a blanket override of upstream terms: attribution, share-alike and non-commercial requirements from a source are carried through unchanged.",
+      "A source whose licence terms cannot be read is not published at all.",
+      "The chosen terms are declared per dataset in candidates/<id>/license.json and recorded in the release manifest, so the manifest cannot drift from the decision."
+    ],
+    "source_data": {
+      "attribution": "Derived dataset based on Financial Tracking Service (FTS) data, OCHA HPC API records harvested 2026-10-30 and the HDX 'Global - Requirements and Funding Data' bulk CSV (downloaded 2026-10-29), https://fts.unocha.org and https://data.humdata.org/dataset/global-requirements-and-funding-data . Contains OCHA Financial Tracking Service data licensed under CC BY-IGO. Not an OCHA or FTS product.",
+      "citation": "United Nations OCHA. Financial Tracking Service: Global Requirements and Funding Data (HDX bulk distribution, downloaded 2026-10-29) and HPC API plan/flow records (harvested 2026-10-30). https://fts.unocha.org . CC BY-IGO. Derived dataset: humanitarian-appeal funding-trajectory prediction task (not an OCHA product).",
+      "derived_labelling": "Labelled as a derived research dataset throughout; it is not OCHA's or FTS's official product and neither has reviewed or endorsed it. The publisher's own designation, required attribution statement and suggested citation are preserved, and changes from the source are indicated (row selection, counted exclusions, derived label, the appeal-recency feature, the launch-instant temporal partition).",
+      "evidence": [
+        "[About FTS / Using FTS data, https://fts.unocha.org/content/about-fts-using-fts-data, read 2026-10-29] 'Can I use and republish the data and information published on FTS website/API? Yes. FTS encourages the fair use of its data, graphs and reports. When directly copying and re-using graphs, tables, charts or data as published by FTS on this site, please cite the Financial Tracking Service (FTS), the publication date of the figures used and the relevant URL. If any amends are made to the data that you download or use via the API, or if the data is combined with another source ... we suggest the following citation: [YOU/YOUR ORGANIZATION]...based on Financial Tracking Service (FTS) data, [DATE], [URL].'",
+        "[HDX dataset record 'Global - Requirements and Funding Data', https://data.humdata.org/api/3/action/package_show?id=global-requirements-and-funding-data, read 2026-10-29] license_id cc-by-igo, license_title 'Creative Commons Attribution for Intergovernmental Organisations (CC BY-IGO)', organization 'OCHA Financial Tracking Service (FTS)'.",
+        "[Pinned input bytes] fts_requirements_funding_global.csv, 279,849 B, sha256 928fb168aac97fc45f59f810a10ad3fe10cbbdbb2abe39148331e2268885a163, fetched anonymously from data.humdata.org 2026-10-29 (the vintage cross-check input; flow-vs-CSV agreement asserted on every row at construction). The panel's plan and funding values come from the public anonymous HPC API endpoints api.hpc.tools/v2/public/plan/* and api.hpc.tools/v1/public/fts/flow, harvested 2026-10-30 (job fts-appeal-001) with per-plan compact records retained in the collected harvest provenance."
+      ],
+      "spdx": "CC-BY-IGO",
+      "status": "OCHA Financial Tracking Service data (HPC API plan/flow records; HDX bulk CSV 'Global - Requirements and Funding Data') under the FTS use-and-republish terms plus CC BY-IGO on the HDX record for the bulk distribution. Redistribution and derivatives are permitted with attribution; the no-endorsement condition carries through. The required attribution follows FTS's own suggested form for derived data and names FTS, the publication date and the source URL. The derived dataset is labelled as such throughout and is not an OCHA or FTS product; FTS has not reviewed or endorsed it."
+    }
+  },
+  "measurements": {
+    "artifact_version": "ac529cd4e9d4da90f804ecef425e74c94a946b857fe39095fd73a0407506b8c0",
+    "baseline_job": "fts-baseline-002 (2026-11-02): fetched the five accepted files from private staging release 431492902 with every sha256 verified on arrival, re-accepted the bytes against the gate's own collected report BEFORE any score existed, materialized the runner workdir from the public splits only (the private holdout was never copied into a workdir), then ran the benchmark's own train.py and validate.sh unmodified (bundled digests equal the read-only clone's)",
+    "baseline_result": {
+      "contract_ok": true,
+      "dependencies": {
+        "numpy": "2.5.4",
+        "pandas": "2.3.3",
+        "python": "3.13.18",
+        "scikit-learn": "1.9.1",
+        "xgboost": "3.4.1"
+      },
+      "full_model_eval_auc_train_py": 0.6452,
+      "full_model_eval_auc_validate_py": 0.6452,
+      "runner_unmodified": true,
+      "scope": "runner-contract baseline only; no agent or harness comparison was run and none is implied; the holdout was not evaluated and stays sealed",
+      "two_implementations_agree": true
+    },
+    "finding": {
+      "comparison": "full model 0.6452 vs persistence_last_coverage 0.7171136653895275 on the identical 139 eval rows: the model trails by 0.0719 AUC, and also trails every other measured simple reference except the majority-class rate",
+      "information_asymmetry": "the model's shipped information set deliberately omits the last prior same-country outcome (the country_prior_* features were the 2026-11-01 queue audit's P0 label-recovery channel and are unshippable under the operator's standard), while the persistence reference reads prior-in-time outcomes scorer-side; the gap is quoted with this note and is not read as model failure against an equal information set",
+      "predecessor": "the same stock runner measured 0.6298 on the pre-rebuild 12-column artifact e7441e1f (job fts-baseline-001, 2026-11-01); removing the P0 prior-outcome features slightly improved the runner (0.6298 -> 0.6452) while closing the label-recovery channel",
+      "recorded_defect_not_task_property": "a model below persistence is a recorded defect under the dataset-qualification protocol: any headroom claim on this task requires beating persistence_last_coverage on the same rows",
+      "verdict": "no demonstrated headroom under this protocol for the stock runner"
+    },
+    "gate_version": "1.5.0",
+    "p0_history": {
+      "2026-11-01_queue_audit": "the audit recovered 120/139 eval and 128/182 holdout labels exactly through the shipped country_prior_* features (count x rounded-rate arithmetic plus the last-prior tie rule), reading only shipped features of later rows",
+      "fts-appeal-003_rebuild": "the prior-outcome features (country_prior_appeals, country_prior_covered_rate, country_last_prior_covered) no longer ship; every remaining feature is a function of the row's own launch record except years_since_country_prior, which reads only WHICH strictly-earlier same-country appeals exist (their years, never their labels), is derivable from the shipped row set itself, and is asserted label-free by brute-force recompute at construction; rows are unchanged vs the audited artifact e7441e1f (train 437/279, eval 139/81, holdout 182/96)",
+      "post_rebuild_requirement": "the fresh independent pre-flip audit must re-attack the rebuilt bytes label-blind; the 2026-11-01 queue audit's frozen attack code is the baseline and must now find no operand columns"
+    },
+    "panel": {
+      "distinct_countries": {
+        "eval": 51,
+        "holdout": 43,
+        "train": 78
+      },
+      "positive_rate": {
+        "eval": 0.582734,
+        "holdout": 0.527473,
+        "train": 0.638444
+      },
+      "positives": {
+        "eval": 81,
+        "holdout": 96,
+        "train": 279
+      },
+      "rows": {
+        "eval": 139,
+        "holdout": 182,
+        "train": 437
+      },
+      "shipped_columns": 9,
+      "split": "temporal on the plan year: train 2000-2016, eval 2017-2020, holdout 2021-2025 (the 2026+ live edge is excluded until those years close; exclusions are counted, never scored)"
+    },
+    "per_label_year_note": "references and the baseline are quoted on the pooled 2017-2020 eval window; the references implementation also reports per-year persistence AUC (0.73611 / 0.66579 / 0.74716 / 0.72727 for 2017-2020), recorded in the candidate record",
+    "qualified_by_job": "fts-appeal-003 (gate on the full artifact on the worker, failed_checks empty; exact-byte --accept ACCEPTED)",
+    "references_same_eval_rows": {
+      "ask_size_rate": 0.7126436781609196,
+      "country_hist_rate": 0.6729459344401874,
+      "majority_class_accuracy": 0.5827338129496403,
+      "note": "all references measured on the identical 139 eval rows by the references implementation in code/score.py (job fts-appeal-003 stage 4, post-acceptance only). persistence_last_coverage and prior_mean_rate are recomputed scorer-side from prior-in-time same-country labels (train+eval only; the holdout is never opened) because their feature form is exactly the prior-outcome channel removed under the operator's P0 standard. majority_class_accuracy fits the constant label on train and measures its agreement with eval labels.",
+      "persistence_last_coverage": 0.7171136653895275,
+      "plan_type_rate": 0.669220945083014,
+      "prior_mean_rate": 0.7143465304384845
+    }
+  },
+  "package_digest": null,
   "package_files": {
-    "DATA_DICTIONARY.md": "4701a73235a4422928cda168d0ec0f735a9816172a38d0bbbb29c72faa47aa53",
+    ".dataset-site/LICENSE-MIT.txt": "200f782f6b8bc23b926ea774cbacb4147826b3b2b59200917d8dc5ec68159535",
+    ".dataset-site/build.py": "4c1673a6f1f70c53b1782db237b4220506f1f65a33ecc9315d8c45c732223015",
+    ".dataset-site/config.json": "24f9d6d2ee370c27886ed011a723374f669b72366cf285582ff1c0bf799a4f2d",
+    ".dataset-site/editions/ocha-fts-appeal-funding-trajectory/v2026.11/1.json": "9c3e075e9b9de9e9cb2c20fdb8ba2fbdc08c1422815fd65fbc711862d0437616",
+    ".dataset-site/owner.json": "81a318205c0e8ada9af2921567da7e79bba33557ba82025b2e9f896f81e57d1c",
+    ".dataset-site/records/ocha-fts-appeal-funding-trajectory/v2026.11.json": "9c3e075e9b9de9e9cb2c20fdb8ba2fbdc08c1422815fd65fbc711862d0437616",
+    ".github/workflows/dataset-site.yml": "3986e6e7dad806a9b41c9881e91166ce1e4890ac0053ad48a06dbc138bd0a27d",
+    "DATA_DICTIONARY.md": "051fecc08d2201fffd94279cbf5fb1a34f44fa12a683600bd6952d4d0a15b9ca",
     "LICENSE-CC0-1.0.txt": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
     "LICENSE-MIT.txt": "200f782f6b8bc23b926ea774cbacb4147826b3b2b59200917d8dc5ec68159535",
     "LICENSE.md": "9ba993c82aa7a5ac42b82525e4aaffc10ff7bf0012e7fd24bd3cfcefc9dd75df",
-    "README.md": "98c34a50fa1ee385931002932ee3064e5e2467a7d04a26eb484b2844b2f56f22",
-    "RELEASE_NOTES.md": "73aa1730b948d230b3ebf26aaed72baa4bb3c6142f4219967842c04cd8677c84",
+    "README.md": "c1e718234a527b4a3795cf976d11d3a6bb8c7ea2268e4204c824299b91f7cd37",
+    "RELEASE_NOTES.md": "5d7edf2cfa1305061bfee609b4d7011472a9bb5a8e4e5db122715e6634fd1413",
     "REPRODUCE.md": "09a4394f6dcff878885048f72e06c9256713065c197b343630a376f4f8cd4098",
     "SHA256SUMS": "dbd553f2db954dee4d8ae281bb1f72c5ca54d0d384eb9bd7b5737dfc09758dab",
-    "VERIFICATION.md": "f48492dd1cdb7e5f56e6eb7d8d8e327a66607b273e30d2f05a3babd989aad044",
+    "VERIFICATION.md": "b22f81cddf85e20cace796bdcd3cf9cbfb06ff7278ef2ddd5c013cbdc4583447",
     "baseline/README.md": "e3c3a68b04ef8d81aa23c8acfe3fd030f265ec31130d450defdd08765de2e0bf",
     "baseline/reproduce_baseline.sh": "32de96032ab1b55d19fdcd1e04e0f5a6b10a187633aa280e9ee76aee9f03c584",
     "baseline/train.py": "a3c6bcf13735bc85c52129ded68f839090dffdc266ebc3810dc61b2e6ea5e7e8",
@@ -133,13 +260,24 @@
     "qualification.json": "cbbef718b801b74297f7fec8296111f7647d6206f6b11d38e5277cf4b9af5d64",
     "quality.json": "108be84f79ecfc54477404a0af20f5e9a0e33f58ab70c8cea7f7dc763d7e0432"
   },
-  "baseline_command": "sh baseline/reproduce_baseline.sh ./task",
-  "get_dataset_command": "python3 get_dataset.py --dest ./task",
+  "publication_note": "Prepared for human review. Nothing here has been published.",
+  "published": false,
+  "qualification": {
+    "artifact_version": "7bbc851418920071eea5e3abc17fad9812e107295e0354afbeefa953077832e1",
+    "failed_checks": [],
+    "gate_version": "1.5.0",
+    "ok": true,
+    "report": "qualification.json",
+    "result": "PASSED"
+  },
+  "release_tag": "v2026.11",
+  "release_version": "2026.11",
+  "repository": "https://github.com/earino/ocha-fts-appeal-funding-trajectory",
+  "scope": "One baseline through the runner's training and validation contract. No agent or harness comparison was run and none is implied.",
   "source": {
-    "name": "OCHA Financial Tracking Service - HPC API plan/flow records and the HDX 'Global - Requirements and Funding Data' bulk CSV",
-    "landing_page": "https://fts.unocha.org/ and https://data.humdata.org/dataset/global-requirements-and-funding-data",
-    "api": "https://api.hpc.tools/v2/public/plan/year/{year}, https://api.hpc.tools/v2/public/plan/{planId} and https://api.hpc.tools/v1/public/fts/flow?planId={id}&year={year} - public anonymous endpoints; plan detail carries launch-vintage origRequirements, and the flow endpoint's incoming.fundingTotal is the label numerator (never shipped)",
     "accessed": "2026-10-29 (HDX CSV, pinned bytes) and 2026-10-30 (HPC API harvest, job fts-appeal-001); the FTS API exposes no historical vintages (checked), so the panel is current-vintage retrospective and no as-of reconstruction is claimed",
+    "api": "https://api.hpc.tools/v2/public/plan/year/{year}, https://api.hpc.tools/v2/public/plan/{planId} and https://api.hpc.tools/v1/public/fts/flow?planId={id}&year={year} - public anonymous endpoints; plan detail carries launch-vintage origRequirements, and the flow endpoint's incoming.fundingTotal is the label numerator (never shipped)",
+    "landing_page": "https://fts.unocha.org/ and https://data.humdata.org/dataset/global-requirements-and-funding-data",
     "licence": "FTS use-and-republish permission (fts.unocha.org/content/about-fts-using-fts-data, read 2026-10-29) plus CC BY-IGO on the HDX record for the bulk CSV; both quoted in the candidate record's license_evidence and carried into LICENSE.md. Derived research dataset - not an OCHA or FTS product.",
     "licence_evidence": [
       {
@@ -154,159 +292,28 @@
         "read": "2026-10-29",
         "url": "https://data.humdata.org/api/3/action/package_show?id=global-requirements-and-funding-data"
       }
-    ]
-  },
-  "layout": {
-    "public/train.csv": "public/train.csv",
-    "public/eval.csv": "public/eval.csv",
-    "private/holdout.csv": "private/holdout.csv",
-    "meta.json": "meta.json",
-    "quality.json": "quality.json"
-  },
-  "files": {
-    "public/train.csv": {
-      "bytes": 29660,
-      "sha256": "db0c7eea0efd3362f369b64c446d4f237b390d8d5539306dc9b66857e685b787"
-    },
-    "public/eval.csv": {
-      "bytes": 9322,
-      "sha256": "c11c03935277ecb164ccde4648fd6541e69d962239a561347832e220c981ef2c"
-    },
-    "private/holdout.csv": {
-      "bytes": 12862,
-      "sha256": "ffa427d9e67cd1ed7213c370b805287e58549d9058e9241bb01af40105dd37d9"
-    },
-    "meta.json": {
-      "bytes": 1891,
-      "sha256": "9f3095a8f2662387c75e098f4d1a4e60292109f5ebc503288a357df864659b5e"
-    },
-    "quality.json": {
-      "bytes": 23627,
-      "sha256": "108be84f79ecfc54477404a0af20f5e9a0e33f58ab70c8cea7f7dc763d7e0432"
-    }
+    ],
+    "name": "OCHA Financial Tracking Service - HPC API plan/flow records and the HDX 'Global - Requirements and Funding Data' bulk CSV"
   },
   "splits": {
-    "train": {
-      "rows": 437,
-      "positives": 279,
-      "positive_rate": 0.638444
-    },
     "eval": {
-      "rows": 139,
+      "positive_rate": 0.582734,
       "positives": 81,
-      "positive_rate": 0.582734
+      "rows": 139
     },
     "holdout": {
-      "rows": 182,
+      "positive_rate": 0.527473,
       "positives": 96,
-      "positive_rate": 0.527473
+      "rows": 182
+    },
+    "train": {
+      "positive_rate": 0.638444,
+      "positives": 279,
+      "rows": 437
     }
   },
-  "qualification": {
-    "gate_version": "1.5.0",
-    "ok": true,
-    "failed_checks": [],
-    "result": "PASSED",
-    "artifact_version": "7bbc851418920071eea5e3abc17fad9812e107295e0354afbeefa953077832e1",
-    "report": "qualification.json"
-  },
-  "baseline": {
-    "job": "fts-baseline-005",
-    "purpose": "one baseline through the runner's existing training and validation contract, on the accepted ocha-fts-appeal-funding-trajectory artifact 7bbc8514 (the re-audit-corrected v2026.11 package; grain described as appeal-plan ID x plan year). Re-run of the fts-baseline-002 measurement on the corrected shipped bytes: the three CSVs are byte-identical, and every figure reproduces exactly (Eval AUC 0.6452 via train.py, validate.py and the predict_proba path; CONTRACT OK; gate --accept ACCEPTED 7bbc8514 before any number was computed).",
-    "artifact": {
-      "name": "ocha-fts-appeal-funding-trajectory",
-      "target": "reached_half",
-      "positive_label": 1,
-      "id_columns": [
-        "plan_year_id"
-      ],
-      "rows": {
-        "eval": 139,
-        "holdout": 182,
-        "train": 437
-      },
-      "positive_rate": {
-        "eval": 0.582734,
-        "holdout": 0.527473,
-        "train": 0.638444
-      },
-      "split_description": "temporal on the plan year: train 2000-2016, eval 2017-2020, holdout 2021-2025 (the 2026+ live edge is excluded until those years close; exclusions are counted, never scored)"
-    },
-    "qualification_report": {
-      "bundled": "qualification.json",
-      "sha256": "cbbef718b801b74297f7fec8296111f7647d6206f6b11d38e5277cf4b9af5d64",
-      "gate_version": "1.5.0",
-      "gate_ok": true,
-      "gate_failed_checks": [],
-      "accepted_before_scoring": true,
-      "accepted_artifact_version": "7bbc851418920071",
-      "qualified_artifact_version": "7bbc851418920071eea5e3abc17fad9812e107295e0354afbeefa953077832e1"
-    },
-    "contract": {
-      "contract_ok": true,
-      "eval_auc_from_train_py": 0.6452,
-      "eval_auc_from_validate_py": 0.6452
-    },
-    "runner_files": {
-      "bundled_sha256": {
-        "train.py": "a3c6bcf13735bc85c52129ded68f839090dffdc266ebc3810dc61b2e6ea5e7e8",
-        "validate.py": "b597e7f84fed614e64b4a86fbecbd6ec0145916a24d0d221a796586976418e7b",
-        "validate.sh": "3f06ca48f11c2e05d331b4d8394284925de660c1d4b086d2f8243959e83b7e6d"
-      },
-      "expected_sha256": {},
-      "unmodified": false
-    },
-    "dependencies": {
-      "python": "3.13.18",
-      "pandas": "2.3.3",
-      "numpy": "2.5.4",
-      "xgboost": "3.4.1",
-      "scikit-learn": "1.9.1"
-    },
-    "scope": "runner-contract baseline only; no agent loop, no holdout evaluation. Holdout stays sealed until the design is frozen."
-  },
-  "scope": "One baseline through the runner's training and validation contract. No agent or harness comparison was run and none is implied.",
-  "published": false,
-  "publication_note": "Prepared for human review. Nothing here has been published.",
-  "licenses": {
-    "policy_version": "2026-09-19",
-    "decided": "2026-11-02",
-    "code": {
-      "spdx": "MIT",
-      "file": "LICENSE-MIT.txt",
-      "copyright": "Copyright (c) 2026 E. Ari\u00f1o de la Rubia (earino)",
-      "third_party": [
-        {
-          "file": "baseline/train.py, baseline/validate.py, baseline/validate.sh",
-          "terms": "MIT - the harness benchmark's own runner files, shipped verbatim and unmodified (bundled sha256 equal the benchmark clone's hashes, recorded as unmodified: true in the baseline job result fts-baseline-002)",
-          "permission": "The benchmark checkout is read-only; permission to distribute verbatim copies of its runner files covers the distributed copies only"
-        }
-      ]
-    },
-    "data_compilation": {
-      "spdx": "CC0-1.0",
-      "file": "LICENSE-CC0-1.0.txt",
-      "scope": "Our contribution - the single-country-appeal eligibility frame (one-country CSV groups with a positive launch-vintage original requirements figure, plan years 2000-2025), the counted exclusions (multi-country regional groups, no-orig groups, the pre-window and the 2026+ live edge as unobserved-target censoring), the derived binary label (year-end funding >= 50% of original launch-vintage requirements), the appeal-recency feature computed only from the YEARS of strictly-earlier same-country appeals, the launch-instant temporal partition, and the packaging - is dedicated to the public domain under CC0-1.0. The dedication covers only our contribution: the underlying FTS/HPC data keeps its own terms and attribution requirements, which carry through to every copy of the derived data. Nothing here relicenses the source or presents CC0 as the source's terms."
-    },
-    "source_data": {
-      "spdx": "CC-BY-IGO",
-      "status": "OCHA Financial Tracking Service data (HPC API plan/flow records; HDX bulk CSV 'Global - Requirements and Funding Data') under the FTS use-and-republish terms plus CC BY-IGO on the HDX record for the bulk distribution. Redistribution and derivatives are permitted with attribution; the no-endorsement condition carries through. The required attribution follows FTS's own suggested form for derived data and names FTS, the publication date and the source URL. The derived dataset is labelled as such throughout and is not an OCHA or FTS product; FTS has not reviewed or endorsed it.",
-      "evidence": [
-        "[About FTS / Using FTS data, https://fts.unocha.org/content/about-fts-using-fts-data, read 2026-10-29] 'Can I use and republish the data and information published on FTS website/API? Yes. FTS encourages the fair use of its data, graphs and reports. When directly copying and re-using graphs, tables, charts or data as published by FTS on this site, please cite the Financial Tracking Service (FTS), the publication date of the figures used and the relevant URL. If any amends are made to the data that you download or use via the API, or if the data is combined with another source ... we suggest the following citation: [YOU/YOUR ORGANIZATION]...based on Financial Tracking Service (FTS) data, [DATE], [URL].'",
-        "[HDX dataset record 'Global - Requirements and Funding Data', https://data.humdata.org/api/3/action/package_show?id=global-requirements-and-funding-data, read 2026-10-29] license_id cc-by-igo, license_title 'Creative Commons Attribution for Intergovernmental Organisations (CC BY-IGO)', organization 'OCHA Financial Tracking Service (FTS)'.",
-        "[Pinned input bytes] fts_requirements_funding_global.csv, 279,849 B, sha256 928fb168aac97fc45f59f810a10ad3fe10cbbdbb2abe39148331e2268885a163, fetched anonymously from data.humdata.org 2026-10-29 (the vintage cross-check input; flow-vs-CSV agreement asserted on every row at construction). The panel's plan and funding values come from the public anonymous HPC API endpoints api.hpc.tools/v2/public/plan/* and api.hpc.tools/v1/public/fts/flow, harvested 2026-10-30 (job fts-appeal-001) with per-plan compact records retained in the collected harvest provenance."
-      ],
-      "attribution": "Derived dataset based on Financial Tracking Service (FTS) data, OCHA HPC API records harvested 2026-10-30 and the HDX 'Global - Requirements and Funding Data' bulk CSV (downloaded 2026-10-29), https://fts.unocha.org and https://data.humdata.org/dataset/global-requirements-and-funding-data . Contains OCHA Financial Tracking Service data licensed under CC BY-IGO. Not an OCHA or FTS product.",
-      "citation": "United Nations OCHA. Financial Tracking Service: Global Requirements and Funding Data (HDX bulk distribution, downloaded 2026-10-29) and HPC API plan/flow records (harvested 2026-10-30). https://fts.unocha.org . CC BY-IGO. Derived dataset: humanitarian-appeal funding-trajectory prediction task (not an OCHA product).",
-      "derived_labelling": "Labelled as a derived research dataset throughout; it is not OCHA's or FTS's official product and neither has reviewed or endorsed it. The publisher's own designation, required attribution statement and suggested citation are preserved, and changes from the source are indicated (row selection, counted exclusions, derived label, the appeal-recency feature, the launch-instant temporal partition)."
-    },
-    "rules": [
-      "Code and documentation: MIT by default.",
-      "Our rights in a derived compilation: CC0-1.0 by default.",
-      "The source's own terms are preserved and never relicensed; the compilation dedication covers only our contribution.",
-      "Each dataset must use terms compatible with its sources. CC0 is NOT a blanket override of upstream terms: attribution, share-alike and non-commercial requirements from a source are carried through unchanged.",
-      "A source whose licence terms cannot be read is not published at all.",
-      "The chosen terms are declared per dataset in candidates/<id>/license.json and recorded in the release manifest, so the manifest cannot drift from the decision."
-    ]
-  }
+  "staging_release": 431492902,
+  "staging_release_tag": "job-fts-appeal-003",
+  "staging_repo": "earino/dataset-factory-staging",
+  "visibility": "private (publication requires explicit authorisation)"
 }
