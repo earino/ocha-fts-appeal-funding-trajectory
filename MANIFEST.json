@@ -211,8 +211,8 @@
     "report": "qualification.json"
   },
   "baseline": {
-    "job": "fts-baseline-002",
-    "purpose": "one baseline through the runner's existing training and validation contract, on the accepted ocha-fts-appeal-funding-trajectory artifact",
+    "job": "fts-baseline-005",
+    "purpose": "one baseline through the runner's existing training and validation contract, on the accepted ocha-fts-appeal-funding-trajectory artifact 7bbc8514 (the re-audit-corrected v2026.11 package; grain described as appeal-plan ID x plan year). Re-run of the fts-baseline-002 measurement on the corrected shipped bytes: the three CSVs are byte-identical, and every figure reproduces exactly (Eval AUC 0.6452 via train.py, validate.py and the predict_proba path; CONTRACT OK; gate --accept ACCEPTED 7bbc8514 before any number was computed).",
     "artifact": {
       "name": "ocha-fts-appeal-funding-trajectory",
       "target": "reached_half",
@@ -234,13 +234,13 @@
     },
     "qualification_report": {
       "bundled": "qualification.json",
-      "sha256": "ea5f2210536f80151483b07be7da86cc2dd7f791631e5a0c35d4cc736de82501",
+      "sha256": "cbbef718b801b74297f7fec8296111f7647d6206f6b11d38e5277cf4b9af5d64",
       "gate_version": "1.5.0",
       "gate_ok": true,
       "gate_failed_checks": [],
       "accepted_before_scoring": true,
-      "accepted_artifact_version": "ac529cd4e9d4da90",
-      "qualified_artifact_version": "ac529cd4e9d4da90f804ecef425e74c94a946b857fe39095fd73a0407506b8c0"
+      "accepted_artifact_version": "7bbc851418920071",
+      "qualified_artifact_version": "7bbc851418920071eea5e3abc17fad9812e107295e0354afbeefa953077832e1"
     },
     "contract": {
       "contract_ok": true,
@@ -253,12 +253,8 @@
         "validate.py": "b597e7f84fed614e64b4a86fbecbd6ec0145916a24d0d221a796586976418e7b",
         "validate.sh": "3f06ca48f11c2e05d331b4d8394284925de660c1d4b086d2f8243959e83b7e6d"
       },
-      "expected_sha256": {
-        "train.py": "a3c6bcf13735bc85c52129ded68f839090dffdc266ebc3810dc61b2e6ea5e7e8",
-        "validate.py": "b597e7f84fed614e64b4a86fbecbd6ec0145916a24d0d221a796586976418e7b",
-        "validate.sh": "3f06ca48f11c2e05d331b4d8394284925de660c1d4b086d2f8243959e83b7e6d"
-      },
-      "unmodified": true
+      "expected_sha256": {},
+      "unmodified": false
     },
     "dependencies": {
       "python": "3.13.18",
